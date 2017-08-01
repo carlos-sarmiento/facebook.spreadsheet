@@ -57,7 +57,7 @@ The main project. It is comprised of the following Key Components:
 
 1. `Terms/*`: Contains classes to describe the terms that might appear in a cell's `Formula`. For this project, cells may contain either `ReferenceTerms` which point to another cell for its value, `ValueTerms` which contain an explicit numeric value or `OperandTerms` that specify an arithmetic operation (`+ - * /`).
 
-1. `Cells/*`: Contains classes to describe the structure of Cells. Cells contain a set of `Terms` which describe`Formula` in Reverse Polish Notation.
+1. `Cells/Cell.cs`: Defines a class to represent a Cell. Cells contain a set of `Terms` which describe`Formula` in Reverse Polish Notation.
 
 1. `Cells/CellParsing.cs`: Has the logic required to parse a string representation of a `Cell`.
 
