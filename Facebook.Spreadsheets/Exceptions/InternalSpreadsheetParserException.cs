@@ -4,18 +4,12 @@ namespace Facebook.Spreadsheets.Exceptions
 {
     public abstract class InternalSpreadsheetParserException : Exception
     {
-        protected InternalSpreadsheetParserException(string message) : base(message)
-        { }
+        protected InternalSpreadsheetParserException(string message) : base(message) { }
     }
 
     public class InvalidFormulaParsingException : InternalSpreadsheetParserException
     {
         public InvalidFormulaParsingException() : base("Invalid or Incomplete Formula.") { }
-    }
-
-    public class InvalidOperatorParsingException : InternalSpreadsheetParserException
-    {
-        public InvalidOperatorParsingException(string operand) : base($"'{operand}' is not one of the valid operators (+, -, *, /).") { }
     }
 
     public class InvalidValueParsingException : InternalSpreadsheetParserException

@@ -7,6 +7,11 @@ namespace Facebook.Spreadsheets.Exceptions
         protected InternalSpreadsheetEvaluationException(string message) : base(message) { }
     }
 
+    public class InvalidFormulaEvaluationException : InternalSpreadsheetEvaluationException
+    {
+        public InvalidFormulaEvaluationException() : base("Invalid or Incomplete Formula.") { }
+    }
+
     public class DivisionByZeroEvaluationException : InternalSpreadsheetEvaluationException
     {
         public DivisionByZeroEvaluationException() : base("Division by Zero detected.") { }

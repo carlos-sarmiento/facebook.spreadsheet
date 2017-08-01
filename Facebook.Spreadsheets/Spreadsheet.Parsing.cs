@@ -11,14 +11,12 @@ namespace Facebook.Spreadsheets
 {
     public partial class Spreadsheet
     {
-        #region Parsing
-
         public static Spreadsheet LoadSpreadsheetFromStream(Stream inputStream, ILogger logger)
         {
             logger.Information("Parsing Started");
             var spreadsheetEvaluator = new Spreadsheet(logger);
 
-            const int bufferLength = 256;
+            const int bufferLength = 1024;
             var buffer = new char[bufferLength];
 
             var currentRow = 1;
@@ -162,29 +160,11 @@ namespace Facebook.Spreadsheets
             var formulaCell = cell as FormulaCell;
             if (formulaCell != null)
             {
-                var valueTerm1 = formulaCell.Param1 as ValueTerm;
-                var valueTerm2 = formulaCell.Param2 as ValueTerm;
-                if (valueTerm1 != null && valueTerm2 != null)
-                {
-                    try
-                    {
-                        formulaCell.Value = CalculateValue(valueTerm1.Value, valueTerm2.Value, formulaCell.Operand);
-                    }
-                    catch (InternalSpreadsheetEvaluationException ex)
-                    {
-                        throw new SpreadsheetEvaluationException(ex, formulaCell.Address);
-                    }
-                    Logger.Verbose($"Evaluated: {formulaCell.Address} = {formulaCell.Value}");
-                }
-                else
-                {
-                    _cellsToCalculate.Add(formulaCell);
-                }
+
+                _cellsToCalculate.Add(formulaCell);
             }
 
             SpreadsheetCells[SpreadsheetCells.Count - 1].Add(cell);
         }
-
-        #endregion
     }
 }

@@ -43,10 +43,13 @@ namespace Facebook.Spreadsheets.Tests
             using (var reader = new StreamReader(actualOpen, Encoding.UTF8))
             {
                 actualString = reader.ReadToEnd();
-            }           
+            }
 
-            Assert.Equal(expected, actualString);
-            Assert.Equal(GetMD5(expected), GetMD5(actualString));
+            var finalExpected = expected.Replace("\r", "");
+            var finalActual = actualString.Replace("\r", "");
+
+            Assert.Equal(finalExpected, finalActual);
+            Assert.Equal(GetMD5(finalExpected), GetMD5(finalActual));
         }
 
         public static string GetMD5(string input)

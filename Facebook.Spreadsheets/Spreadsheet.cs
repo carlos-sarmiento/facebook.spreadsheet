@@ -12,10 +12,10 @@ namespace Facebook.Spreadsheets
             Logger = logger;
         }
 
-        public ILogger Logger { get; set; }
+        internal ILogger Logger { get; }
 
         private readonly IList<FormulaCell> _cellsToCalculate = new List<FormulaCell>();
 
-        public IList<IList<Cell>> SpreadsheetCells { get; set; }
+        public IList<IList<Cell>> SpreadsheetCells { get; }
     }
 }

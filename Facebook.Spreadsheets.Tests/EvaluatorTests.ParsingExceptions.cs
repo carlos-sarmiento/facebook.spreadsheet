@@ -6,7 +6,7 @@ namespace Facebook.Spreadsheets.Tests
 {
     public partial class EvaluatorTests
     {
-        public void TestThrows<T>(string testName) where T : InternalSpreadsheetParserException
+        public void ParsingTestThrows<T>(string testName) where T : InternalSpreadsheetParserException
         {
             var inputFileStream = TestUtils.LoadFileAsStream($"testFiles/invalidParsing/{testName}.txt");
 
@@ -20,20 +20,12 @@ namespace Facebook.Spreadsheets.Tests
         }
 
         [Theory]
-        [InlineData(@"invalidFormulaOperand")]
-        [InlineData(@"invalidFormulaOperandHuge")]
-        public void InvalidFormulaOperand(string testName)
-        {
-            TestThrows<InvalidOperatorParsingException>(testName);
-        }
-
-        [Theory]
         [InlineData(@"invalidCellCharacters")]
         [InlineData(@"invalidCellCharacters2")]
         [InlineData(@"invalidCellCharacters3")]
         public void InvalidCellCharacters(string testName)
         {
-            TestThrows<InvalidCharacterInCellParsingException>(testName);
+            ParsingTestThrows<InvalidCharacterInCellParsingException>(testName);
         }
 
         [Theory]
@@ -43,16 +35,17 @@ namespace Facebook.Spreadsheets.Tests
         [InlineData(@"invalidFormula")]
         public void MissingAndInvalidCellValues(string testName)
         {
-            TestThrows<InvalidFormulaParsingException>(testName);
+            ParsingTestThrows<InvalidFormulaParsingException>(testName);
         }
 
         [Theory]
         [InlineData(@"invalidCellReference")]
         [InlineData(@"invalidCellReference2")]
         [InlineData(@"invalidCellValue")]
+        [InlineData(@"invalidFormulaOperand")]
         public void InvalidCellReferencesOrValues(string testName)
         {
-            TestThrows<InvalidValueParsingException>(testName);
+            ParsingTestThrows<InvalidValueParsingException>(testName);
         }
     }
 }

@@ -6,10 +6,7 @@ namespace Facebook.Spreadsheets.Tests
 {
     public partial class EvaluatorTests
     {
-        [Theory]
-        [InlineData(@"divisionByZero")]
-        [InlineData(@"divisionByZeroSimple")]
-        public void DivisionByZero(string testName)
+        public void EvalTestThrows<T>(string testName) where T : InternalSpreadsheetEvaluationException
         {
             var inputFileStream = TestUtils.LoadFileAsStream($"testFiles/invalidEval/{testName}.txt");
 
@@ -19,7 +16,15 @@ namespace Facebook.Spreadsheets.Tests
                 spreadsheetEvaluator.Evaluate();
             });
 
-            Assert.True(exception.InnerException is DivisionByZeroEvaluationException);
+            Assert.IsType<T>(exception.InnerException);
+        }
+
+        [Theory]
+        [InlineData(@"divisionByZero")]
+        [InlineData(@"divisionByZeroSimple")]
+        public void DivisionByZero(string testName)
+        {
+            EvalTestThrows<DivisionByZeroEvaluationException>(testName);
         }
 
         [Theory]
@@ -27,16 +32,7 @@ namespace Facebook.Spreadsheets.Tests
         [InlineData(@"cycleInEvalComplex")]
         public void CycleInEval(string testName)
         {
-            var inputFileStream = TestUtils.LoadFileAsStream($"testFiles/invalidEval/{testName}.txt");
-
-            var spreadsheetEvaluator = Spreadsheet.LoadSpreadsheetFromStream(inputFileStream, Log.Logger);
-
-            var exception = Assert.Throws<SpreadsheetEvaluationException>(() =>
-            {
-                spreadsheetEvaluator.Evaluate();
-            });
-
-            Assert.True(exception.InnerException is CycleDetectedEvaluationException);
+            EvalTestThrows<CycleDetectedEvaluationException>(testName);
         }
 
         [Theory]
@@ -44,32 +40,22 @@ namespace Facebook.Spreadsheets.Tests
         [InlineData(@"overflow")]
         public void OverflowInEval(string testName)
         {
-            var inputFileStream = TestUtils.LoadFileAsStream($"testFiles/invalidEval/{testName}.txt");
-
-            var spreadsheetEvaluator = Spreadsheet.LoadSpreadsheetFromStream(inputFileStream, Log.Logger);
-
-            var exception = Assert.Throws<SpreadsheetEvaluationException>(() =>
-            {
-                spreadsheetEvaluator.Evaluate();
-            });
-
-            Assert.True(exception.InnerException is OverflowEvaluationException);
+            EvalTestThrows<OverflowEvaluationException>(testName);
         }
 
         [Theory]
         [InlineData(@"invalidCellReference")]
         public void InvalidReferences(string testName)
         {
-            var inputFileStream = TestUtils.LoadFileAsStream($"testFiles/invalidEval/{testName}.txt");
-
-            var spreadsheetEvaluator = Spreadsheet.LoadSpreadsheetFromStream(inputFileStream, Log.Logger);
-
-            var exception = Assert.Throws<SpreadsheetEvaluationException>(() =>
-            {
-                spreadsheetEvaluator.Evaluate();
-            });
-
-            Assert.True(exception.InnerException is InvalidCellReferenceEvaluationException);
+            EvalTestThrows<InvalidCellReferenceEvaluationException>(testName);
         }
+
+        [Theory]
+        [InlineData(@"invalidFormulaOperandHuge")]
+        public void InvalidFormula(string testName)
+        {
+            EvalTestThrows<InvalidFormulaEvaluationException>(testName);
+        }
+
     }
 }

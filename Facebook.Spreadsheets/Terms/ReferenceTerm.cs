@@ -1,4 +1,5 @@
-﻿using Facebook.Spreadsheets.Exceptions;
+﻿using Facebook.Spreadsheets.Cells;
+using Facebook.Spreadsheets.Exceptions;
 
 namespace Facebook.Spreadsheets.Terms
 {
@@ -16,11 +17,13 @@ namespace Facebook.Spreadsheets.Terms
             Address = $"{column}{row}";
         }
 
-        public string Address { get; set; }
+        public string Address { get; }
 
-        public int Row { get; set; }
+        public int Row { get; }
 
-        public int Column { get; set; }
+        public int Column { get; }
+
+        public Cell TargetCell { get; set; }
 
         private static int ParseColumn(string column, string row)
         {

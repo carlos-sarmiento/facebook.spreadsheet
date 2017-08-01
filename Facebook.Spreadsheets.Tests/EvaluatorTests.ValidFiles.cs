@@ -27,7 +27,9 @@ namespace Facebook.Spreadsheets.Tests
         [InlineData(@"singleReference")]
         [InlineData(@"repeatEvaluation")]
         [InlineData(@"repeatEvaluation2")]
+        [InlineData(@"randomNumbers")]
         [InlineData(@"500KCells")]
+        [InlineData(@"longReversePolish")]
         public void ValidFiles(string testName)
         {
             var inputFileStream = TestUtils.LoadFileAsStream($"testFiles/valid/{testName}.txt");

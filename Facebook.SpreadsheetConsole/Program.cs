@@ -48,7 +48,7 @@ namespace Facebook.SpreadsheetConsole
         {
             if (args.Length != 2)
             {
-                Log.Logger.Fatal("Missing Arguments. Application must be called as: .\\Facebook.SpreadsheetConsole <inputFilePath> <outputFilePath>");
+                Log.Logger.Fatal("Missing Arguments. Application must be called with arguments: <inputFilePath> <outputFilePath>");
                 return null;
             }
 

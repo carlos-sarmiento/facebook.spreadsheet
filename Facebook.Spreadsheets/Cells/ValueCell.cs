@@ -12,6 +12,6 @@ namespace Facebook.Spreadsheets.Cells
             }
 
             Value = val;
-        }       
+        }
     }
 }

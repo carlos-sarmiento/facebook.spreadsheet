@@ -13,17 +13,26 @@ namespace Facebook.Spreadsheets.Cells
         {
             var parts = formula.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
+            Cell cell = null;
+
             if (parts.Length == 1)
             {
-                return ParseValueCell(parts[0]);
+                cell = ParseValueCell(parts[0]);
             }
 
-            if (parts.Length == 3)
+            else if (parts.Length >= 3)
             {
-                return ParseFormulaCell(parts[2], parts[0], parts[1]);
+                cell = ParseFormulaCell(parts);
             }
 
-            throw new InvalidFormulaParsingException();
+            if (cell == null)
+            {
+                throw new InvalidFormulaParsingException();
+            }
+
+            cell.Content = formula;
+
+            return cell;
         }
 
         private static Cell ParseValueCell(string val)
@@ -34,11 +43,9 @@ namespace Facebook.Spreadsheets.Cells
             {
                 return new FormulaCell
                 {
-                    Operand = Operand.Sum,
                     Value = null,
                     IsBeingEvaluated = false,
-                    Param1 = new ReferenceTerm(match.Groups["column"].Value, match.Groups["row"].Value),
-                    Param2 = new ValueTerm(0)
+                    Terms = new Term[] { new ReferenceTerm(match.Groups["column"].Value, match.Groups["row"].Value) }
                 };
             }
 
@@ -46,40 +53,51 @@ namespace Facebook.Spreadsheets.Cells
         }
 
 
-        private static Cell ParseFormulaCell(string operand, string v1, string v2)
+        private static Cell ParseFormulaCell(string[] terms)
         {
-            var op = ParseOperand(operand);
+            var parsedTerms = new Term[terms.Length];
 
-            var matchT1 = CellReferenceRegex.Match(v1);
-            var t1 = matchT1.Success ? (Term)new ReferenceTerm(matchT1.Groups["column"].Value, matchT1.Groups["row"].Value) : new ValueTerm(v1);
+            for (var i = 0; i < terms.Length; i++)
+            {
+                var term = terms[i];
 
-            var matchT2 = CellReferenceRegex.Match(v2);
-            var t2 = matchT2.Success ? (Term)new ReferenceTerm(matchT2.Groups["column"].Value, matchT2.Groups["row"].Value) : new ValueTerm(v2);
+                var operand = ParseOperand(term);
+                if (operand.HasValue)
+                {
+                    parsedTerms[i] = new OperandTerm(operand.Value);
+                    continue;
+                }
+
+                var match = CellReferenceRegex.Match(term);
+                parsedTerms[i] = match.Success ? (Term)new ReferenceTerm(match.Groups["column"].Value, match.Groups["row"].Value) : new ValueTerm(term);
+            }
 
             return new FormulaCell()
             {
                 Value = null,
                 IsBeingEvaluated = false,
-                Operand = op,
-                Param1 = t1,
-                Param2 = t2
+                Terms = parsedTerms
             };
         }
 
-        private static Operand ParseOperand(string operand)
+        private static Operand? ParseOperand(string operand)
         {
             switch (operand)
             {
                 case "+":
                     return Operand.Sum;
+
                 case "-":
                     return Operand.Substraction;
+
                 case "*":
                     return Operand.Multiplication;
+
                 case "/":
                     return Operand.Division;
+
                 default:
-                    throw new InvalidOperatorParsingException(operand);
+                    return null;
             }
         }
     }

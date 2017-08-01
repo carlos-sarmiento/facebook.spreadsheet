@@ -9,6 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Facebook.Spreadsheets.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Facebook.SpreadsheetConsole", "Facebook.SpreadsheetConsole\Facebook.SpreadsheetConsole.csproj", "{3B56989C-708B-463E-B525-EF18FD7C6CEB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5BB5F32A-7F26-4E94-A518-5C5B0C3FD5FB}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		executeAllFiles.sh = executeAllFiles.sh
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
