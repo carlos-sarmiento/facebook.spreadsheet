@@ -22,7 +22,7 @@ dotnet run --project ./Facebook.SpreadsheetConsole/Facebook.SpreadsheetConsole.c
 
 ## Assumptions
 
-1. Cells can contain an `Operation` (comprised of `Terms`, either references to other cells or explicit values, and operators), a single Reference or a numeric value.
+1. Cells can contain an `Formula` (comprised of `Terms`, either references to other cells or explicit values, and operators), a single Reference or a numeric value.
 
 1. Negative values always have the `-` with no whitespace between it and the number.
 
@@ -34,12 +34,11 @@ dotnet run --project ./Facebook.SpreadsheetConsole/Facebook.SpreadsheetConsole.c
 
 1. All arithmetic operations will be done using .NET's `decimal` type. This is a trade-off of memory in exchange for precision.
 
-1. Rows may contain different amounts of cells. All cells must have a value.
+1. Rows may contain different amounts of cells. All cells must have a `Formula`.
 
 1. All output files use UNIX File endings (`\n`) in all platforms (including Windows). Input files can have either UNIX or Windows Line Endings
 
 ## Project Structure
-
 ### Facebook.SpreadsheetConsole
 
 A console application that hosts the `Facebook.Spreadsheets` code and manages `command-line arguments` and `File IO`.
@@ -96,9 +95,9 @@ The files located in `./valid/` are all Spreadsheets that can be sucessfully eva
 
 * `negativeMatrixMultiplicationLowerCase.txt`: A matrix in which all values are multiplications of values from the first row with values from the first column. In this test case some Cell References are writen in lowercase.
 
-* `pow2Asc.txt`: Calculate all the powers of two from 1 to 50.
+* `pow2Asc.txt`: Calculate all the powers of two from 2^0^ to 2^50^.
 
-* `pow2Desc.txt`: Divide 2^50 by two until reaching 1.
+* `pow2Desc.txt`: Divide 2^50^ by two until reaching 1.
 
 * `randomNumbers.txt`: Spreadsheet with varied operations using randomly generated numbers between `-5000` and `5000`.
 
