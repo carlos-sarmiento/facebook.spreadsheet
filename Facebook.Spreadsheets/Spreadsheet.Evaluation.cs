@@ -140,12 +140,18 @@ namespace Facebook.Spreadsheets
                 }
                 else if (term is OperandTerm)
                 {
-                    var t2 = evaluationStack.Pop();
-                    var t1 = evaluationStack.Pop();
+                    try
+                    {
+                        var t2 = evaluationStack.Pop();
+                        var t1 = evaluationStack.Pop();
 
-                    var result = CalculateValue(t1, t2, ((OperandTerm)term).Operand);
-
-                    evaluationStack.Push(result);
+                        var result = CalculateValue(t1, t2, ((OperandTerm)term).Operand);
+                        evaluationStack.Push(result);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new InvalidFormulaEvaluationException();
+                    }
                 }
             }
 

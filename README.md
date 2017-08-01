@@ -72,7 +72,7 @@ A xUnit project to run all tests without hosting the console (doing all IO in me
 
 ## Test Cases
 
-The project includes 35 test cases. These are located in folders inside `./Facebook.SpreadsheetEvaluation/Facebook.Spreadsheets.Tests/testFiles`
+The project includes 36 test cases. These are located in folders inside `./Facebook.SpreadsheetEvaluation/Facebook.Spreadsheets.Tests/testFiles`
 
 ### Valid Spreadsheets
 
@@ -141,6 +141,8 @@ The files located in `./invalidEval/` are files that can be parsed, but cannot b
 * `invalidCellReference.txt`: A formula that references a cell that doesn't exist on the spreadsheet.
 
 * `invalidFormulaOperandHuge.txt`: A single cell in a file with 500K+ cells that contains a formula that cannot be evaluated because its missing an `Operator`.
+
+* `invalidPolish.txt`: A cell that contains an invalid Polish Notation formula (missing a term)
 
 * `overflow.txt`: A single cell which calculates `decimal.MaxValue + 1`.
 

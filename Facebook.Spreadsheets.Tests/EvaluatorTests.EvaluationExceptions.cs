@@ -51,6 +51,7 @@ namespace Facebook.Spreadsheets.Tests
         }
 
         [Theory]
+        [InlineData(@"invalidPolish")]
         [InlineData(@"invalidFormulaOperandHuge")]
         public void InvalidFormula(string testName)
         {
