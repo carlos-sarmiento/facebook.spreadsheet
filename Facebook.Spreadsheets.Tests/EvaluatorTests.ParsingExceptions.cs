@@ -30,9 +30,6 @@ namespace Facebook.Spreadsheets.Tests
 
         [Theory]
         [InlineData(@"missingCellValue")]
-        [InlineData(@"missingCellValue2")]
-        [InlineData(@"missingCellValue3")]
-        [InlineData(@"invalidFormula")]
         public void MissingAndInvalidCellValues(string testName)
         {
             ParsingTestThrows<InvalidFormulaParsingException>(testName);

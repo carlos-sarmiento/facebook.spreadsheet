@@ -1,6 +1,5 @@
 using System;
 using System.Text.RegularExpressions;
-using Facebook.Spreadsheets.Exceptions;
 using Facebook.Spreadsheets.Terms;
 
 namespace Facebook.Spreadsheets.Cells
@@ -13,45 +12,11 @@ namespace Facebook.Spreadsheets.Cells
         {
             var parts = formula.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            Cell cell = null;
-
-            if (parts.Length == 1)
-            {
-                cell = ParseValueCell(parts[0]);
-            }
-
-            else if (parts.Length >= 3)
-            {
-                cell = ParseFormulaCell(parts);
-            }
-
-            if (cell == null)
-            {
-                throw new InvalidFormulaParsingException();
-            }
-
+            var cell = ParseFormulaCell(parts);
             cell.Content = formula;
 
             return cell;
         }
-
-        private static Cell ParseValueCell(string val)
-        {
-            var match = CellReferenceRegex.Match(val);
-
-            if (match.Success)
-            {
-                return new FormulaCell
-                {
-                    Value = null,
-                    IsBeingEvaluated = false,
-                    Terms = new Term[] { new ReferenceTerm(match.Groups["column"].Value, match.Groups["row"].Value) }
-                };
-            }
-
-            return new ValueCell(val);
-        }
-
 
         private static Cell ParseFormulaCell(string[] terms)
         {
@@ -72,7 +37,15 @@ namespace Facebook.Spreadsheets.Cells
                 parsedTerms[i] = match.Success ? (Term)new ReferenceTerm(match.Groups["column"].Value, match.Groups["row"].Value) : new ValueTerm(term);
             }
 
-            return new FormulaCell()
+            if (parsedTerms.Length == 1 && parsedTerms[0] is ValueTerm)
+            {
+                return new Cell()
+                {
+                    Value = ((ValueTerm)parsedTerms[0]).Value
+                };
+            }
+
+            return new Cell()
             {
                 Value = null,
                 IsBeingEvaluated = false,

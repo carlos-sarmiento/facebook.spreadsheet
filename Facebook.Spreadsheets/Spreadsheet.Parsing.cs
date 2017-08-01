@@ -157,11 +157,9 @@ namespace Facebook.Spreadsheets
 
         private void AppendCellToLastRow(Cell cell)
         {
-            var formulaCell = cell as FormulaCell;
-            if (formulaCell != null)
+            if (!cell.Value.HasValue)
             {
-
-                _cellsToCalculate.Add(formulaCell);
+                _cellsToCalculate.Add(cell);
             }
 
             SpreadsheetCells[SpreadsheetCells.Count - 1].Add(cell);

@@ -14,7 +14,7 @@ namespace Facebook.Spreadsheets
 
         internal ILogger Logger { get; }
 
-        private readonly IList<FormulaCell> _cellsToCalculate = new List<FormulaCell>();
+        private readonly IList<Cell> _cellsToCalculate = new List<Cell>();
 
         public IList<IList<Cell>> SpreadsheetCells { get; }
     }

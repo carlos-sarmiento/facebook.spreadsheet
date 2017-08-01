@@ -57,9 +57,9 @@ The main project. It is comprised of the following Key Components:
 
 1. `Terms/*`: Contains classes to describe the terms that might appear in a cell's `Formula`. For this project, cells may contain either `ReferenceTerms` which point to another cell for its value, `ValueTerms` which contain an explicit numeric value or `OperandTerms` that specify an arithmetic operation (`+ - * /`).
 
-1. `Cells/*`: Contains classes to describe the structure of Cells. Cells can be either `FormulaCells` which contain a `Formula` in Reverse Polish Notation to calculate its value or a `ValueCell` that contains an explicit numeric value.
+1. `Cells/*`: Contains classes to describe the structure of Cells. Cells contain a set of `Terms` which describe`Formula` in Reverse Polish Notation.
 
-1. `Cells/CellParsing.cs`: Has the logic required to parse a string representation of a Cell into an appropriate instance of `FormulaCell` or `ValueCell`.
+1. `Cells/CellParsing.cs`: Has the logic required to parse a string representation of a `Cell`.
 
 1. `Exceptions/*`: Contains several exceptions to describe error conditions in the code and provide specific feedback on each type of error.
 
@@ -125,11 +125,7 @@ The files located in `./invalidParsing/` are files that cannot be converted into
 
 * `invalidCellValue.txt`: Contains a cell value that cannot be parsed into a valid number.
 
-* `invalidFormula.txt`: Contains an invalid Formula.
-
 * `invalidFormulaOperand.txt`: Contains a formula that cannot be parsed because the operator is not `+ - * /`.
-
-* `missingCellValue.txt`, `missingCellValue2.txt`, `missingCellValue3.txt`: Contains a cell that does not have any value (formula or number).
 
 ### Spreadsheets with Evaluation errors
 
@@ -145,9 +141,13 @@ The files located in `./invalidEval/` are files that can be parsed, but cannot b
 
 * `invalidCellReference.txt`: A formula that references a cell that doesn't exist on the spreadsheet.
 
+* `invalidFormula.txt`: Contains an invalid Formula.
+
 * `invalidFormulaOperandHuge.txt`: A single cell in a file with 500K+ cells that contains a formula that cannot be evaluated because its missing an `Operator`.
 
 * `invalidPolish.txt`: A cell that contains an invalid Polish Notation formula (missing a term)
+
+* `missingCellValue.txt`, `missingCellValue2.txt`, `missingCellValue3.txt`: Contains a cell that does not have any value (formula or number).
 
 * `overflow.txt`: A single cell which calculates `decimal.MaxValue + 1`.
 

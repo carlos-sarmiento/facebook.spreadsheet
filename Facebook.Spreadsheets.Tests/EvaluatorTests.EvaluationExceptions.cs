@@ -53,10 +53,12 @@ namespace Facebook.Spreadsheets.Tests
         [Theory]
         [InlineData(@"invalidPolish")]
         [InlineData(@"invalidFormulaOperandHuge")]
+        [InlineData(@"missingCellValue2")]
+        [InlineData(@"missingCellValue3")]
+        [InlineData(@"invalidFormula")]
         public void InvalidFormula(string testName)
         {
             EvalTestThrows<InvalidFormulaEvaluationException>(testName);
         }
-
     }
 }

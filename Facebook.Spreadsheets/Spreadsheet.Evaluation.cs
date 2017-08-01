@@ -21,14 +21,14 @@ namespace Facebook.Spreadsheets
             Logger.Information("Evaluation Finished");
         }
 
-        private void EvaluateCell(FormulaCell cell)
+        private void EvaluateCell(Cell cell)
         {
             if (cell.Value.HasValue)
             {
                 return;
             }
 
-            var evaluationStack = new Stack<FormulaCell>();
+            var evaluationStack = new Stack<Cell>();
 
             evaluationStack.Push(cell);
 
@@ -62,7 +62,7 @@ namespace Facebook.Spreadsheets
 
                     foreach (var pendingReference in pendingReferences)
                     {
-                        AddCellToStack(evaluationStack, GetCell(pendingReference) as FormulaCell);
+                        AddCellToStack(evaluationStack, GetCell(pendingReference));
                     }
                 }
                 catch (InternalSpreadsheetEvaluationException ex)
@@ -90,7 +90,7 @@ namespace Facebook.Spreadsheets
             return false;
         }
 
-        private void AddCellToStack(Stack<FormulaCell> stack, FormulaCell cell)
+        private void AddCellToStack(Stack<Cell> stack, Cell cell)
         {
             if (cell == null || cell.Value.HasValue)
             {
