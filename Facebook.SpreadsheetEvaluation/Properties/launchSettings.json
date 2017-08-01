@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Facebook.SpreadsheetEvaluation": {
+      "commandName": "Project",
+      "commandLineArgs": "test.txt test.out.txt",
+      "workingDirectory": "E:\\facebook\\"
+    }
+  }
+}
