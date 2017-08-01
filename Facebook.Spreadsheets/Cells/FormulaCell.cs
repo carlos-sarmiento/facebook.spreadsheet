@@ -6,6 +6,6 @@ namespace Facebook.Spreadsheets.Cells
     {
         public Term[] Terms { get; set; }
 
-        public bool IsBeingEvaluated { get; set; }        
+        public bool IsBeingEvaluated { get; set; }
     }
 }

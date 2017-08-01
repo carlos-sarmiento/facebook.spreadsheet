@@ -8,10 +8,16 @@ Setup instructions are here: [https://www.microsoft.com/net/download/core#/runti
 
 ## How to Execute
 
-To execute the application against all included test files call the following script in the project's root folder:
+To execute the application against all included test files using the Console host call the following script in the project's root folder:
 
 ```bash
 ./executeAllFiles.sh
+```
+
+To execute the application against all included test files using the xUnit Test Runner call the following script in the project's root folder:
+
+```bash
+./executeAllTests.sh
 ```
 
 To execute the application against a particular file (from the root folder):
@@ -22,19 +28,19 @@ dotnet run --project ./Facebook.SpreadsheetConsole/Facebook.SpreadsheetConsole.c
 
 ## Assumptions
 
-1. Cells can contain an `Formula` (comprised of `Terms`, either references to other cells or explicit values, and operators), a single Reference or a numeric value.
+1. Cells can contain a `Formula` comprised of `Terms`, either references to other cells (`ReferenceTerm`), explicit values (`ValueTerm`) and operators (`OperandTerm`).
 
-1. Negative values always have the `-` with no whitespace between it and the number.
+1. Negative values always have the minus (`-`) with no whitespace between it and the number.
 
 1. Numbers are rounded to its 9th most significant decimal. Only significant digits will be printed.
 
-1. There are no trailing `,` in any row
+1. There are no trailing commans (`,`) in any row. Trailing whitespace is ignored.
 
 1. The last line of the input file may be empty. The output file will not have extra lines.
 
 1. All arithmetic operations will be done using .NET's `decimal` type. This is a trade-off of memory in exchange for precision.
 
-1. Rows may contain different amounts of cells. All cells must have a `Formula`.
+1. Rows may contain different numbers of cells. All cells must have a `Formula`.
 
 1. All output files use UNIX File endings (`\n`) in all platforms (including Windows). Input files can have either UNIX or Windows Line Endings
 
@@ -49,9 +55,9 @@ The main project. It is comprised of the following Key Components:
 
 1. `Spreadsheet.cs`: Contains all the logic for Parsing (`Spreadsheet.Parsing.cs`), Evaluating (`Spreadsheet.Evaluation.cs`) and Writing (`Spreadsheet.Output.cs`) the results of a spreadsheet.
 
-1. `Terms/*`: Contains classes to describe the terms that might appear in a cell's `formula`. For this project, cells may contain either `ReferenceTerms` which point to another cell for its value or `ValueTerms` that contain an explicit numeric value.
+1. `Terms/*`: Contains classes to describe the terms that might appear in a cell's `Formula`. For this project, cells may contain either `ReferenceTerms` which point to another cell for its value, `ValueTerms` which contain an explicit numeric value or `OperandTerms` that specify an arithmetic operation (`+ - * /`).
 
-1. `Cells/*`: Contains classes to describe the structure of Cells. Cells can be either `FormulaCells` which contain a formula to calculate its value (using two `Terms` and an `Operand`) or a `ValueCell` that contains an explicit numeric value.
+1. `Cells/*`: Contains classes to describe the structure of Cells. Cells can be either `FormulaCells` which contain a `Formula` in Reverse Polish Notation to calculate its value or a `ValueCell` that contains an explicit numeric value.
 
 1. `Cells/CellParsing.cs`: Has the logic required to parse a string representation of a Cell into an appropriate instance of `FormulaCell` or `ValueCell`.
 
@@ -59,11 +65,11 @@ The main project. It is comprised of the following Key Components:
 
 #### Key Functions
 
-* `static Spreadsheet LoadSpreadsheetFromStream(...)`: Returns a new instance of Spreadsheet that contains all the cells that were parsed from the input stream. Does all parsing validations and builds a list of all cells that contain formulas that need to be evaluated. Any error returns an instance of `SpreadsheetParserException`. Runtime `O(n)` where `n` is the number of cells
+* `static Spreadsheet LoadSpreadsheetFromStream(...)`: Returns a new instance of Spreadsheet that contains all the cells that were parsed from the input stream. Does all parsing validations and builds a list of all cells that contain formulas that need to be evaluated. Any error throws an instance of `SpreadsheetParserException`. Runtime `O(n)` where `n` is the number of cells
 
-* `void Evaluate()`: Evaluates the spreadsheet by iterating only over the cells that need evaluation. Cells are visited only once and the result of its evaluation is stored to eliminate redundancies. If a cell is visited twice during the same calculation a cycle is detected. Does all other evaluation validations. Any error returns an instance of `SpreadsheetEvaluationException`. Best-Case Runtime `O(1)` (when no cell needs to be evaluated). Worst-Case Runtime `O(n)`.
+* `void Evaluate()`: Evaluates the spreadsheet by iterating only over the cells that need evaluation. Cells are visited only once and the result of its evaluation is stored to eliminate redundancies. If a cell is visited twice during the same calculation a cycle is detected. Does all other evaluation validations. Any error throws an instance of `SpreadsheetEvaluationException`. Best-Case Runtime `O(1)` (when no cell needs to be evaluated). Worst-Case Runtime `O(n)`.
 
-* `decimal CalculatePolishNotation()`: Resolves a formula expressed as a list of Terms in Reverse Polish Notation. When this function is called, all `ReferenceTerms` have already been resolved. Runtime `O(n)` where `n` is the number of terms.
+* `decimal CalculatePolishNotation()`: Resolves a formula expressed in Reverse Polish Notation as a list of Terms. When this function is called, all `ReferenceTerms` have already been resolved. Runtime `O(n)` where `n` is the number of terms.
 
 ### Facebook.Spreadsheets.Tests
 
@@ -95,9 +101,9 @@ The files located in `./valid/` are all Spreadsheets that can be sucessfully eva
 
 * `negativeMatrixMultiplicationLowerCase.txt`: A matrix in which all values are multiplications of values from the first row with values from the first column. In this test case some Cell References are writen in lowercase.
 
-* `pow2Asc.txt`: Calculate all the powers of two from 2^0^ to 2^50^.
+* `pow2Asc.txt`: Calculate all the powers of two from 2^0 to 2^50.
 
-* `pow2Desc.txt`: Divide 2^50^ by two until reaching 1.
+* `pow2Desc.txt`: Divide 2^50 by two until reaching 1.
 
 * `randomNumbers.txt`: Spreadsheet with varied operations using randomly generated numbers between `-5000` and `5000`.
 
