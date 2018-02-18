@@ -6,7 +6,7 @@ namespace Facebook.Spreadsheets.Tests
 {
     public partial class EvaluatorTests
     {
-        public void ParsingTestThrows<T>(string testName) where T : InternalSpreadsheetParserException
+        private void ParsingTestThrows<T>(string testName) where T : InternalSpreadsheetParserException
         {
             var inputFileStream = TestUtils.LoadFileAsStream($"testFiles/invalidParsing/{testName}.txt");
 

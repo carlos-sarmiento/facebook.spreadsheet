@@ -2,7 +2,7 @@
 
 ## Installation
 
-In order to run this code, it is necessary to have the .NET Core 1.1.2 runtime installed. It is available on Windows, MacOS and Linux. 
+In order to run this code, it is necessary to have the .NET Core 2.0 runtime installed. It is available on Windows, MacOS and Linux. 
 
 Setup instructions are here: [https://www.microsoft.com/net/download/core#/runtime](https://www.microsoft.com/net/download/core#/runtime)
 
